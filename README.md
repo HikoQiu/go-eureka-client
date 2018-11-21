@@ -22,6 +22,12 @@ Tips: Non-full-features, only some basic and useful features implemented.
 
 #### go-eureka-client extended features
 
+| FEATURES | Support |
+|:--------:|:-------:|
+|AutoUpdateDnsServiceUrls| √ |
+|AutoUpdateDnsServiceUrlsIntervals| √ |
+|HeartbeatIntervals| √ |
+
 ### Samples
 
 #### Sample 1
