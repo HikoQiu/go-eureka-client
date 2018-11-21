@@ -45,6 +45,11 @@ Get Eureka server urls from configuration, e.g:
         "zone-cn-hz-1": "http://192.168.20.236:9001/eureka,http://192.168.20.237:9001/eureka",
     }
 
+    // custom logger
+    //eureka.SetLogger(func(format string, a ...interface{}) {
+    //   fmt.Println("[custom logger] " + format, a)
+    //})
+
     // run eureka client async
     eureka.DefaultClient.SetConfig(config).
         Register("APP_ID_CLIENT_FROM_CONFIG", 9000).
@@ -69,6 +74,11 @@ Get Eureka server urls from dns(TXT Record) lookup, e.g:
     config.EurekaServerDNSName = "dev.ms-registry.xf.io"
     config.EurekaServerUrlContext = "eureka"
     config.EurekaServerPort = "9001"
+
+    // custom logger
+    //eureka.SetLogger(func(format string, a ...interface{}) {
+    //   fmt.Println("[custom logger] " + format, a)
+    //})
 
     // run eureka client async
     eureka.DefaultClient.SetConfig(config).
@@ -128,4 +138,11 @@ Eureka server Rest api supported, refer to list below:
 | Query for all instances under a particular **vip address** | GET /eureka/v2/vips/**vipAddress** | × |
 | Query for all instances under a particular **secure vip address** | GET /eureka/v2/svips/**svipAddress** | × |
 
+### Registry screenshots
+
+![Registry screenshots](registry.png)
+
+### Client heartbeat
+
+![Client Heartbeat](heartbeat.png)
 

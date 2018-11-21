@@ -16,6 +16,11 @@ func main() {
     config.EurekaServerUrlContext = "eureka"
     config.EurekaServerPort = "9001"
 
+    // custom logger
+    //eureka.SetLogger(func(format string, a ...interface{}) {
+    //    fmt.Println("[custom logger] " + format, a)
+    //})
+
     // run eureka client async
     eureka.DefaultClient.SetConfig(config).
         Register("APP_ID_CLIENT_FROM_DNS", 9000).

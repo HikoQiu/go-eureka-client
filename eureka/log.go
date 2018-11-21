@@ -8,6 +8,10 @@ type LogFunc func(format string, a ...interface{})
 
 var log LogFunc
 
+func SetLogger(logFunc LogFunc)  {
+   log = logFunc
+}
+
 func (t LogFunc) Debugf(format string, a ...interface{}) {
     t(format, a...)
 }

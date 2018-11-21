@@ -15,6 +15,11 @@ func main() {
         "zone-cn-hz-1": "http://192.168.20.236:9001/eureka,http://192.168.20.237:9001/eureka",
     }
 
+    // custom logger
+    //eureka.SetLogger(func(format string, a ...interface{}) {
+    //   fmt.Println("[custom logger] " + format, a)
+    //})
+
     // run eureka client async
     eureka.DefaultClient.SetConfig(config).
         Register("APP_ID_CLIENT_FROM_CONFIG", 9000).
