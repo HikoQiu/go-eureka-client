@@ -3,11 +3,11 @@ package eureka
 import (
     "time"
     "sync"
-    "k8s.io/kubernetes/staging/src/k8s.io/apimachinery/pkg/util/rand"
     "github.com/kataras/iris/core/errors"
     "syscall"
     "os"
     "os/signal"
+    "math/rand"
 )
 
 const (
@@ -158,7 +158,7 @@ func (t *Client) pickServiceUrl() (string, bool) {
     t.mu.RLock()
     defer t.mu.RUnlock()
 
-    index := rand.IntnRange(0, len(t.serviceUrls)-1)
+    index := rand.Intn(len(t.serviceUrls)-1)
     return t.serviceUrls[index], true
 }
 
