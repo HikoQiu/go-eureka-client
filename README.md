@@ -47,7 +47,7 @@ Get Eureka server urls from configuration, e.g:
     select {}
 ````
 
-Full sample code, refer to: [sample/client_from_config.go](./sample/client_from_config.go)
+Full sample code, refer to: [samples/client_from_config.go](./samples/client_from_config.go)
 
 #### Sample 2
 
@@ -72,7 +72,7 @@ Get Eureka server urls from dns(TXT Record) lookup, e.g:
     select {}
 ````
 
-Full sample code, refer to: [sample/client_from_dns.go](./sample/client_from_dns.go)
+Full sample code, refer to: [samples/client_from_dns.go](./samples/client_from_dns.go)
 
 #### Sample 3
 
@@ -102,7 +102,7 @@ Eureka Server REST api util, e.g:
     log.Println("all instances: ", instances)
 ````
 
-Full sample code, refer to: [sample/eureka_api_rest.go](./sample/eureka_api_rest.go)
+Full sample code, refer to: [samples/eureka_api_rest.go](./samples/eureka_api_rest.go)
 
 Eureka server Rest api supported, refer to list below:
 
