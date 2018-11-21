@@ -5,7 +5,7 @@ import (
     "strings"
     "github.com/miekg/dns"
     "fmt"
-    "github.com/kataras/iris/core/errors"
+    "errors"
 )
 
 // golang's net.LookupTXT has "bug" (comments below), so here use miekg/dns to implement lookupTxt()

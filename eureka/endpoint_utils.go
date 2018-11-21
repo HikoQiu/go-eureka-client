@@ -3,7 +3,7 @@ package eureka
 import (
     "fmt"
     "strings"
-    "github.com/kataras/iris/core/errors"
+    "errors"
 )
 
 type EndpointUtils struct {

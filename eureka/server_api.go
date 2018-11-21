@@ -4,10 +4,10 @@ import (
     "net/http"
     "github.com/go-resty/resty"
     "time"
-    "github.com/kataras/iris/core/errors"
     "fmt"
     "strings"
     "encoding/json"
+    "errors"
 )
 
 // Refer to: https://github.com/Netflix/eureka/wiki/Eureka-REST-operations
