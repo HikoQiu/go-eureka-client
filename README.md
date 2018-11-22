@@ -46,8 +46,12 @@ Get Eureka server urls from configuration, e.g:
     }
 
     // custom logger
-    //eureka.SetLogger(func(format string, a ...interface{}) {
-    //   fmt.Println("[custom logger] " + format, a)
+    //eureka.SetLogger(func(level int, format string, a ...interface{}) {
+    //    if level == eureka.LevelError {
+    //        fmt.Println("[custom logger error] " + format, a)
+    //    }else {
+    //        fmt.Println("[custom logger debug] " + format, a)
+    //    }
     //})
 
     // run eureka client async
@@ -76,8 +80,12 @@ Get Eureka server urls from dns(TXT Record) lookup, e.g:
     config.EurekaServerPort = "9001"
 
     // custom logger
-    //eureka.SetLogger(func(format string, a ...interface{}) {
-    //   fmt.Println("[custom logger] " + format, a)
+    //eureka.SetLogger(func(level int, format string, a ...interface{}) {
+    //    if level == eureka.LevelError {
+    //        fmt.Println("[custom logger error] " + format, a)
+    //    }else {
+    //        fmt.Println("[custom logger debug] " + format, a)
+    //    }
     //})
 
     // run eureka client async
