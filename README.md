@@ -51,7 +51,7 @@ Get Eureka server urls from configuration, e.g:
     //})
 
     // run eureka client async
-    eureka.DefaultClient.SetConfig(config).
+    eureka.DefaultClient.Config(config).
         Register("APP_ID_CLIENT_FROM_CONFIG", 9000).
         Run()
 
@@ -81,7 +81,7 @@ Get Eureka server urls from dns(TXT Record) lookup, e.g:
     //})
 
     // run eureka client async
-    eureka.DefaultClient.SetConfig(config).
+    eureka.DefaultClient.Config(config).
         Register("APP_ID_CLIENT_FROM_DNS", 9000).
         Run()
 
@@ -105,7 +105,7 @@ Eureka Server REST api util, e.g:
         "zone-cn-hz-1": "http://192.168.20.236:9001/eureka,http://192.168.20.237:9001/eureka",
     }
 
-    c := eureka.DefaultClient.SetConfig(config)
+    c := eureka.DefaultClient.Config(config)
     api, err := c.Api()
     if err != nil {
         log.Fatalln("Failed to pick EurekaServerApi instance, err=", err.Error())

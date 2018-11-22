@@ -38,7 +38,7 @@ type Client struct {
     mu sync.RWMutex
 }
 
-func (t *Client) SetConfig(config *EurekaClientConfig) *Client {
+func (t *Client) Config(config *EurekaClientConfig) *Client {
     t.config = config
     return t
 }

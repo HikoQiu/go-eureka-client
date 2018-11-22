@@ -16,7 +16,7 @@ func main() {
         "zone-cn-hz-1": "http://192.168.20.236:9001/eureka,http://192.168.20.237:9001/eureka",
     }
 
-    c := eureka.DefaultClient.SetConfig(config)
+    c := eureka.DefaultClient.Config(config)
     api, err := c.Api()
     if err != nil {
         log.Fatalln("Failed to pick EurekaServerApi instance, err=", err.Error())

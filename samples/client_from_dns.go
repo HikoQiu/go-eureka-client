@@ -22,7 +22,7 @@ func main() {
     //})
 
     // run eureka client async
-    eureka.DefaultClient.SetConfig(config).
+    eureka.DefaultClient.Config(config).
         Register("APP_ID_CLIENT_FROM_DNS", 9000).
         Run()
 
