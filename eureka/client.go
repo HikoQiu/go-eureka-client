@@ -83,7 +83,7 @@ func (t *Client) GetRegistryApps() map[string]ApplicationVo {
 func (t *Client) Run() {
     err := t.refreshServiceUrls()
     if err != nil {
-        log.Debugf("Failed to refresh service urls, err=%s", err.Error())
+        log.Errorf("Failed to refresh service urls, err=%s", err.Error())
         return
     }
 
@@ -100,7 +100,7 @@ func (t *Client) Run() {
 func (t *Client) refreshServiceUrls() error {
     err := t.getServiceUrlsWithZones()
     if err != nil {
-        log.Debugf("Failed to init service urls, err=%s", err.Error())
+        log.Errorf("Failed to init service urls, err=%s", err.Error())
         return err
     }
 
@@ -115,7 +115,7 @@ func (t *Client) refreshServiceUrls() error {
             t.getServiceUrlsWithZones()
 
             time.Sleep(time.Duration(t.config.AutoUpdateDnsServiceUrlsIntervals) * time.Second)
-            log.Debugf("AutoUpdateDnsServiceUrls... ok")
+            log.Errorf("AutoUpdateDnsServiceUrls... ok")
         }
     }()
 
@@ -132,7 +132,7 @@ func (t *Client) getServiceUrlsWithZones() error {
     for _, zone := range availZones {
         urls, err = endpointUtils.GetDiscoveryServiceUrls(t.config, zone)
         if err != nil {
-            log.Debugf("Failed to boot eureka client, zone=%s, err=%s", zone, err.Error())
+            log.Errorf("Failed to boot eureka client, zone=%s, err=%s", zone, err.Error())
             continue
         }
 
@@ -166,7 +166,7 @@ func (t *Client) pickServiceUrl() (string, bool) {
 func (t *Client) pickEurekaServerApi() (*EurekaServerApi, error) {
     url, ok := t.pickServiceUrl()
     if !ok {
-        log.Debugf("No service url is available to pick.")
+        log.Errorf("No service url is available to pick.")
         return nil, errors.New("No service url is available to pick.")
     }
 
@@ -183,7 +183,7 @@ func (t *Client) registerWithEureka() {
     // ensure client succeed to register to eureka server
     for {
         if t.instance == nil {
-            log.Debugf("Eureka instance can't be nil")
+            log.Errorf("Eureka instance can't be nil")
             return
         }
 
@@ -195,7 +195,7 @@ func (t *Client) registerWithEureka() {
 
         instanceId, err := api.RegisterInstanceWithVo(t.instance)
         if err != nil {
-            log.Debugf("Client register failed, err=%s", err.Error())
+            log.Errorf("Client register failed, err=%s", err.Error())
             time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
             continue
         }
@@ -203,7 +203,7 @@ func (t *Client) registerWithEureka() {
 
         err = api.UpdateInstanceStatus(t.instance.App, t.instance.InstanceId, STATUS_UP)
         if err != nil {
-            log.Debugf("Client UP failed, err=%s", err.Error())
+            log.Errorf("Client UP failed, err=%s", err.Error())
             time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
             continue
         }
@@ -229,7 +229,7 @@ func (t *Client) heartbeat() {
 
             err = api.SendHeartbeat(t.instance.App, t.instance.InstanceId)
             if err != nil {
-                log.Debugf("Failed to send heartbeat, err=%s", err.Error())
+                log.Errorf("Failed to send heartbeat, err=%s", err.Error())
                 time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
                 continue
             }
@@ -254,13 +254,13 @@ func (t *Client) refreshRegistry() {
 func (t *Client) fetchRegistry() (map[string]ApplicationVo, error) {
     api, err := t.Api()
     if err != nil {
-        log.Debugf("Failed to QueryAllInstances, err=%s", err.Error())
+        log.Errorf("Failed to QueryAllInstances, err=%s", err.Error())
         return nil, err
     }
 
     apps, err := api.QueryAllInstances()
     if err != nil {
-        log.Debugf("Failed to QueryAllInstances, err=%s", err.Error())
+        log.Errorf("Failed to QueryAllInstances, err=%s", err.Error())
         return nil, err
     }
 
@@ -294,22 +294,22 @@ func (t *Client) handleSignal() {
         case syscall.SIGKILL:
             fallthrough
         case syscall.SIGTERM:
-            log.Debugf("Receive exit signal, client instance going to de-register, instanceId=%s.", t.instance.InstanceId)
+            log.Infof("Receive exit signal, client instance going to de-register, instanceId=%s.", t.instance.InstanceId)
 
             // de-register instance
             api, err := t.Api()
             if err != nil {
-                log.Debugf("Failed to get EurekaServerApi instance, de-register %s failed, err=%s", t.instance.InstanceId, err.Error())
+                log.Errorf("Failed to get EurekaServerApi instance, de-register %s failed, err=%s", t.instance.InstanceId, err.Error())
                 return
             }
 
             err = api.DeRegisterInstance(t.instance.App, t.instance.InstanceId)
             if err != nil {
-                log.Debugf("Failed to de-register %s, err=%s", t.instance.InstanceId, err.Error())
+                log.Errorf("Failed to de-register %s, err=%s", t.instance.InstanceId, err.Error())
                 return
             }
 
-            log.Debugf("de-register %s success.", t.instance.InstanceId)
+            log.Infof("de-register %s success.", t.instance.InstanceId)
             os.Exit(0)
         }
     }

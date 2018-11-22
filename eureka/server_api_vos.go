@@ -73,7 +73,7 @@ func DefaultInstanceVo() *InstanceVo {
     ip := getLocalIp()
     hostname, err := os.Hostname()
     if err != nil {
-        log.Debugf("Failed to get hostname, err=%s, user ip as hostname, ip=%s", err.Error(), ip)
+        log.Errorf("Failed to get hostname, err=%s, user ip as hostname, ip=%s", err.Error(), ip)
         hostname = ip
     }
     return &InstanceVo{

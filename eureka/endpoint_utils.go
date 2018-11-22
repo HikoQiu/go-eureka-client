@@ -30,7 +30,7 @@ func (t *EndpointUtils) getZoneBasedDiscoveryUrlsFromRegion(config *EurekaClient
     discoveryDnsName := fmt.Sprintf("txt.%s.%s", region, config.EurekaServerDNSName)
     zoneCNames, _, err := lookupTXT(discoveryDnsName)
     if err != nil {
-        log.Debugf("LookupTXT failed, err=%s", err.Error())
+        log.Errorf("LookupTXT failed, err=%s", err.Error())
         return nil, err
     }
 
@@ -73,7 +73,7 @@ func (t *EndpointUtils) GetServiceUrlsFromDNS(config *EurekaClientConfig, instan
     }
 
     if len(zoneCnameSets) == 0 {
-        log.Debugf("No available zones configured for the instanceZone, instanceZone: %s", instanceZone);
+        log.Errorf("No available zones configured for the instanceZone, instanceZone: %s", instanceZone);
         return nil, err
     }
 
@@ -84,7 +84,7 @@ func (t *EndpointUtils) GetServiceUrlsFromDNS(config *EurekaClientConfig, instan
             dnsName := fmt.Sprintf("txt.%s", cname)
             records, _, err := lookupTXT(dnsName)
             if err != nil {
-                log.Debugf("LookupTXT failed, dnsName=%s, err=%s", dnsName, err.Error())
+                log.Errorf("LookupTXT failed, dnsName=%s, err=%s", dnsName, err.Error())
                 return nil, err
             }
 
@@ -106,7 +106,7 @@ func (t *EndpointUtils) GetServiceUrlsFromDNS(config *EurekaClientConfig, instan
     }
 
     err = errors.New("Fail to match service urls.")
-    log.Debugf(err.Error())
+    log.Errorf(err.Error())
     return nil, err
 }
 

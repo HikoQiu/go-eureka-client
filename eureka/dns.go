@@ -32,7 +32,7 @@ func lookupTXT(domain string, dnsAddr ...string) ([]string, time.Duration, error
         var err error
         dnsAddr, err = getDnsAddrsFromSystemConf()
         if err != nil {
-            log.Debugf("Failed to get DNS Server address from system conf err=%s", err.Error())
+            log.Errorf("Failed to get DNS Server address from system conf err=%s", err.Error())
         }
     }
 
@@ -43,19 +43,19 @@ func lookupTXT(domain string, dnsAddr ...string) ([]string, time.Duration, error
         query.SetQuestion(domain, dns.TypeTXT)
         response, err := dns.Exchange(query, dnsSvr)
         if err != nil {
-            log.Debugf("Failure resolving name %s err=%s, dns=%s", domain, err.Error(), dnsSvr)
+            log.Errorf("Failure resolving name %s err=%s, dns=%s", domain, err.Error(), dnsSvr)
             continue
         }
 
         if len(response.Answer) < 1 {
             err := fmt.Errorf("no Eureka discovery TXT record returned for name=%s, dns=%s", domain, dnsSvr)
-            log.Debugf("no answer for name=%s err=%s", domain, err.Error())
+            log.Errorf("no answer for name=%s err=%s", domain, err.Error())
             continue
         }
 
         if response.Answer[0].Header().Rrtype != dns.TypeTXT {
             err := fmt.Errorf("did not receive TXT record back from query specifying TXT record. This should never happen.")
-            log.Debugf("Failure resolving name %s err=%s, dns=%s", domain, err.Error(), dnsSvr)
+            log.Errorf("Failure resolving name %s err=%s, dns=%s", domain, err.Error(), dnsSvr)
             continue
         }
         txt := response.Answer[0].(*dns.TXT)
@@ -75,7 +75,7 @@ func lookupTXT(domain string, dnsAddr ...string) ([]string, time.Duration, error
 func getDnsAddrsFromSystemConf() ([]string, error) {
     config, err := dns.ClientConfigFromFile("/etc/resolv.conf")
     if err != nil {
-        log.Debugf("Failure finding DNS server address from /etc/resolv.conf, err = %s", err)
+        log.Errorf("Failure finding DNS server address from /etc/resolv.conf, err = %s", err)
         return nil, err
     }
 

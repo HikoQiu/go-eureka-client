@@ -94,7 +94,7 @@ func (t *EurekaServerApi) RegisterInstanceWithVo(vo *InstanceVo) (string, error)
     body, _ := json.Marshal(map[string]interface{}{"instance": vo})
     _, err := t.request(http.MethodPost, t.url("/apps/"+vo.App), body)
     if err != nil {
-        log.Debugf("Failed to register app=%s, err=%s", vo.App, err.Error())
+        log.Errorf("Failed to register app=%s, err=%s", vo.App, err.Error())
         return "", err
     }
 
@@ -105,7 +105,7 @@ func (t *EurekaServerApi) RegisterInstanceWithVo(vo *InstanceVo) (string, error)
 func (t *EurekaServerApi) DeRegisterInstance(appId, instanceId string) error {
     _, err := t.request(http.MethodDelete, t.url(fmt.Sprintf("/apps/%s/%s", appId, instanceId)))
     if err != nil {
-        log.Debugf("Failed to De-register application instance, err=%s", err.Error())
+        log.Errorf("Failed to De-register application instance, err=%s", err.Error())
         return err
     }
 
@@ -116,7 +116,7 @@ func (t *EurekaServerApi) DeRegisterInstance(appId, instanceId string) error {
 func (t *EurekaServerApi) SendHeartbeat(appId, instanceId string) error {
     _, err := t.request(http.MethodPut, t.url(fmt.Sprintf("/apps/%s/%s", appId, instanceId)))
     if err != nil {
-        log.Debugf("Failed to send instance heartbeat, app-id=%s, instance-id=%s, err=%s", appId, instanceId, err.Error())
+        log.Errorf("Failed to send instance heartbeat, app-id=%s, instance-id=%s, err=%s", appId, instanceId, err.Error())
         return err
     }
 
@@ -127,14 +127,14 @@ func (t *EurekaServerApi) SendHeartbeat(appId, instanceId string) error {
 func (t *EurekaServerApi) QueryAllInstances() ([]ApplicationVo, error) {
     res, err := t.request(http.MethodGet, t.url("/apps"))
     if err != nil {
-        log.Debugf("Failed to query all instances, err=%s", err.Error())
+        log.Errorf("Failed to query all instances, err=%s", err.Error())
         return nil, err
     }
 
     resApps := make(map[string]ApplicationsVo)
     err = json.Unmarshal(res.Body(), &resApps)
     if err != nil {
-        log.Debugf("Failed to query all instances, json.Unmarshal err=%s", err.Error())
+        log.Errorf("Failed to query all instances, json.Unmarshal err=%s", err.Error())
         return nil, err
     }
 
@@ -146,14 +146,14 @@ func (t *EurekaServerApi) QueryAllInstanceByAppId(appId string) ([]InstanceVo, e
     appId = strings.ToUpper(appId)
     res, err := t.request(http.MethodGet, t.url("/apps/"+appId))
     if err != nil {
-        log.Debugf("Failed to query appId instances, err=%s", err.Error())
+        log.Errorf("Failed to query appId instances, err=%s", err.Error())
         return nil, err
     }
 
     resIns := make(map[string]ApplicationVo)
     err = json.Unmarshal(res.Body(), &resIns)
     if err != nil {
-        log.Debugf("Failed to query appId instances, json.Unmarshal err=%s", err.Error())
+        log.Errorf("Failed to query appId instances, json.Unmarshal err=%s", err.Error())
         return nil, err
     }
 
@@ -164,14 +164,14 @@ func (t *EurekaServerApi) QueryAllInstanceByAppId(appId string) ([]InstanceVo, e
 func (t *EurekaServerApi) QuerySpecificAppInstance(instanceId string) (*InstanceVo, error) {
     res, err := t.request(http.MethodGet, t.url("/instances/"+instanceId))
     if err != nil {
-        log.Debugf("Failed to query specific app instance, err=%s", err.Error())
+        log.Errorf("Failed to query specific app instance, err=%s", err.Error())
         return nil, err
     }
 
     resIns := make(map[string]*InstanceVo)
     err = json.Unmarshal(res.Body(), &resIns)
     if err != nil {
-        log.Debugf("Failed to query appId instances, json.Unmarshal err=%s", err.Error())
+        log.Errorf("Failed to query appId instances, json.Unmarshal err=%s", err.Error())
         return nil, err
     }
 
@@ -182,7 +182,7 @@ func (t *EurekaServerApi) QuerySpecificAppInstance(instanceId string) (*Instance
 func (t *EurekaServerApi) UpdateInstanceStatus(appId, instanceId, status string) error {
     _, err := t.request(http.MethodPut, t.url(fmt.Sprintf("/apps/%s/%s/status?value=%s", appId, instanceId, status)))
     if err != nil {
-        log.Debugf("Failed to update instance status, err=%s", err.Error())
+        log.Errorf("Failed to update instance status, err=%s", err.Error())
         return err
     }
 
@@ -199,7 +199,7 @@ func (t *EurekaServerApi) UpdateMeta(appId, instanceId string, meta map[string]s
 
     _, err := t.request(http.MethodPut, t.url(fmt.Sprintf("/apps/%s/%s/metadata?%s", appId, instanceId, queryStr)))
     if err != nil {
-        log.Debugf("Failed to update instance meta data, err=%s", err.Error())
+        log.Errorf("Failed to update instance meta data, err=%s", err.Error())
         return err
     }
 

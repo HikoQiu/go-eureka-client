@@ -6,6 +6,7 @@ import (
 
 const (
     LevelDebug = 1
+    LevelInfo  = 2
     LevelError = 3
 )
 
@@ -21,6 +22,10 @@ func (t LogFunc) Debugf(format string, a ...interface{}) {
     t(LevelDebug, format, a...)
 }
 
+func (t LogFunc) Infof(format string, a ...interface{}) {
+    t(LevelInfo, format, a...)
+}
+
 func (t LogFunc) Errorf(format string, a ...interface{}) {
     t(LevelError, format, a...)
 }
@@ -31,6 +36,8 @@ func init() {
             switch level {
             case LevelDebug:
                 format = "[debug] " + format
+            case LevelInfo:
+                format = "[info] " + format
             case LevelError:
                 format = "[error] " + format
             }
