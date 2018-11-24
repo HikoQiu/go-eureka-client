@@ -77,7 +77,7 @@ func (t *EurekaServerApi) RegisterInstance(appId string, port int) (string, erro
 // Register new application instance
 func (t *EurekaServerApi) RegisterInstanceWithVo(vo *InstanceVo) (string, error) {
     if vo.HomePageUrl == "" {
-        vo.HomePageUrl = fmt.Sprintf("http://%s:%d/", vo.IppAddr, vo.Port.Value)
+        vo.HomePageUrl = fmt.Sprintf("http://%s:%d", vo.IppAddr, vo.Port.Value)
     }
     if vo.StatusPageUrl == "" {
         vo.StatusPageUrl = vo.HomePageUrl + "info"

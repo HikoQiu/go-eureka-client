@@ -74,6 +74,9 @@ func (t *Client) GetInstance() *InstanceVo {
 }
 
 func (t *Client) GetRegistryApps() map[string]ApplicationVo {
+    t.mu.RLock()
+    defer t.mu.RUnlock()
+
     return t.registryApps
 }
 
@@ -87,14 +90,14 @@ func (t *Client) Run() {
         return
     }
 
-    go t.registerWithEureka()
-
     // handle exit signal to de-register instance
     go t.handleSignal()
 
     // (if FetchRegistry is true), fetch registry apps periodically
     // and update to t.registryApps
     go t.refreshRegistry()
+
+    t.registerWithEureka()
 }
 
 func (t *Client) refreshServiceUrls() error {
@@ -158,7 +161,7 @@ func (t *Client) pickServiceUrl() (string, bool) {
     t.mu.RLock()
     defer t.mu.RUnlock()
 
-    index := rand.Intn(len(t.serviceUrls)-1)
+    index := rand.Intn(len(t.serviceUrls) - 1)
     return t.serviceUrls[index], true
 }
 

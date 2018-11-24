@@ -2,6 +2,9 @@ package eureka
 
 import (
     . "log"
+    "runtime"
+    "strings"
+    "fmt"
 )
 
 const (
@@ -41,7 +44,12 @@ func init() {
             case LevelError:
                 format = "[error] " + format
             }
-            Printf(format, a...)
+            funcName, file, line, _ := runtime.Caller(2)
+            fullFuncName := runtime.FuncForPC(funcName).Name()
+            arr := strings.Split(fullFuncName, "/")
+            arrFile := strings.Split(file, "/")
+
+            Printf(fmt.Sprintf("%s %s:%d ", arr[len(arr)-1], arrFile[len(arrFile)-1], line)+format, a...)
         }
     }
 }
