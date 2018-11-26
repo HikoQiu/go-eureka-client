@@ -3,11 +3,11 @@ package eureka
 import (
     "time"
     "sync"
-    "github.com/kataras/iris/core/errors"
     "syscall"
     "os"
     "os/signal"
     "math/rand"
+    "errors"
 )
 
 const (
@@ -161,7 +161,10 @@ func (t *Client) pickServiceUrl() (string, bool) {
     t.mu.RLock()
     defer t.mu.RUnlock()
 
-    index := rand.Intn(len(t.serviceUrls) - 1)
+    index := 0
+    if len(t.serviceUrls) > 1 {
+        index = rand.Intn(len(t.serviceUrls) - 1)
+    }
     return t.serviceUrls[index], true
 }
 

@@ -2,7 +2,7 @@ package eureka
 
 import (
     "net/http"
-    "github.com/go-resty/resty"
+    "gopkg.in/resty.v1"
     "time"
     "fmt"
     "strings"

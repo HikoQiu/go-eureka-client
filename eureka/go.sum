@@ -1,0 +1,5 @@
+github.com/golang/net v0.0.0-20180826012351-8a410e7b638d/go.mod h1:98y8FxUyMjTdJ5eOj/8vzuiVO14/dkJ98NYhEPG8QGY=
+github.com/miekg/dns v1.0.15 h1:9+UupePBQCG6zf1q/bGmTO1vumoG13jsrbWOSX1W6Tw=
+github.com/miekg/dns v1.0.15/go.mod h1:W1PPwlIAgtquWBMBEV9nkV9Cazfe8ScdGz/Lj7v3Nrg=
+gopkg.in/resty.v1 v1.10.2 h1:0kn7/nSP3fjAddBOjnYDq0rmyvVFvuk4iFtWQUWptjc=
+gopkg.in/resty.v1 v1.10.2/go.mod h1:nrgQYbPhkRfn2BfT32NNTLfq3K9NuHRB0MsAcA9weWY=
