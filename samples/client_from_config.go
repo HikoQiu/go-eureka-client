@@ -12,7 +12,7 @@ func main() {
         "region-cn-hd-1": "zone-cn-hz-1",
     }
     config.ServiceUrl = map[string]string{
-        "zone-cn-hz-1": "http://192.168.20.236:9001/eureka",
+        "zone-cn-hz-1": "http://192.168.20.236:9001/eureka,http://192.168.20.237:9001/eureka",
     }
 
     // custom logger
