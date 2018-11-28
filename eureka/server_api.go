@@ -80,11 +80,11 @@ func (t *EurekaServerApi) RegisterInstanceWithVo(vo *InstanceVo) (string, error)
         vo.HomePageUrl = fmt.Sprintf("http://%s:%d", vo.IppAddr, vo.Port.Value)
     }
     if vo.StatusPageUrl == "" {
-        vo.StatusPageUrl = vo.HomePageUrl + "info"
+        vo.StatusPageUrl = strings.Trim(vo.HomePageUrl, "/") + "/info"
     }
 
     if vo.HealthCheckUrl == "" {
-        vo.HealthCheckUrl = vo.HomePageUrl + "health"
+        vo.HealthCheckUrl = strings.Trim(vo.HomePageUrl, "/") + "/health"
     }
 
     if vo.InstanceId == "" {
