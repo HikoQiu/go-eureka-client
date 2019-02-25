@@ -118,7 +118,7 @@ func (t *Client) refreshServiceUrls() error {
             t.getServiceUrlsWithZones()
 
             time.Sleep(time.Duration(t.config.AutoUpdateDnsServiceUrlsIntervals) * time.Second)
-            log.Errorf("AutoUpdateDnsServiceUrls... ok")
+            log.Debugf("AutoUpdateDnsServiceUrls... ok")
         }
     }()
 
