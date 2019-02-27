@@ -1,7 +1,5 @@
 package eureka
 
-import "os"
-
 const (
     STATUS_UP             = "UP"
     STATUS_DOWN           = "DOWN"
@@ -39,7 +37,7 @@ type (
     }
 
     positiveInt struct {
-        Value   int  `json:"$"`
+        Value   int    `json:"$"`
         Enabled string `json:"@enabled"` // true|false
     }
 
@@ -58,26 +56,27 @@ type (
 
     // application
     ApplicationVo struct {
-        Name     string       `json:"name"`
+        Name      string       `json:"name"`
         Instances []InstanceVo `json:"instance"`
     }
 
     ApplicationsVo struct {
-        VersionDelta string        `json:"version__delta"`
-        AppsHashCode string        `json:"apps_hash__code"`
+        VersionDelta string          `json:"version__delta"`
+        AppsHashCode string          `json:"apps_hash__code"`
         Application  []ApplicationVo `json:"application"`
     }
 )
 
 func DefaultInstanceVo() *InstanceVo {
     ip := getLocalIp()
-    hostname, err := os.Hostname()
-    if err != nil {
-        log.Errorf("Failed to get hostname, err=%s, user ip as hostname, ip=%s", err.Error(), ip)
-        hostname = ip
-    }
+    //hostname, err := os.Hostname()
+    //if err != nil {
+    //    log.Errorf("Failed to get hostname, err=%s, user ip as hostname, ip=%s", err.Error(), ip)
+    //    hostname = ip
+    //}
     return &InstanceVo{
-        Hostname:         hostname,
+        //Hostname:         hostname,
+        Hostname:         ip,
         App:              "",
         IppAddr:          ip,
         VipAddress:       ip,
