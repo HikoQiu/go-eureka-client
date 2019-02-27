@@ -5,6 +5,7 @@ import (
     "math/rand"
     "os"
     "os/signal"
+    "strings"
     "sync"
     "syscall"
     "time"
@@ -49,7 +50,7 @@ func (t *Client) Register(appId string, port int) *Client {
     vo.App = appId
     vo.Status = STATUS_STARTING
     vo.Port = positiveInt{Value: port, Enabled: "true"}
-    vo.VipAddress = appId
+    vo.VipAddress = strings.ToLower(appId)
     vo.SecureVipAddress = appId
     t.instance = vo
     return t

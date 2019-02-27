@@ -83,7 +83,7 @@ func DefaultInstanceVo() *InstanceVo {
         SecureVipAddress: ip,
         Status:           STATUS_STARTING,
         Port:             positiveInt{Value: 8080, Enabled: "true"},
-        SecurePort:       positiveInt{Value: 443, Enabled: "true"},
+        SecurePort:       positiveInt{Value: 443, Enabled: "false"},
         HomePageUrl:      "",
         StatusPageUrl:    "",
         HealthCheckUrl:   "",

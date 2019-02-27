@@ -1,6 +1,7 @@
 package eureka
 
 import (
+    "encoding/json"
     "testing"
 )
 
@@ -39,8 +40,8 @@ func Test_QueryAllInstances(t *testing.T) {
     if err != nil {
         t.Fatal("Failed to query all intances: ", err.Error())
     }
-
-    t.Log("Success to query all instances, applications: ", applications)
+    str, _ := json.Marshal(applications)
+    t.Log("Success to query all instances, applications: ", string(str))
 }
 
 func Test_SendHeartbeat(t *testing.T) {
