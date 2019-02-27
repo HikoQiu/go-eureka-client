@@ -1,13 +1,13 @@
 package eureka
 
 import (
-    "time"
-    "sync"
-    "syscall"
+    "errors"
+    "math/rand"
     "os"
     "os/signal"
-    "math/rand"
-    "errors"
+    "sync"
+    "syscall"
+    "time"
 )
 
 const (
@@ -49,6 +49,8 @@ func (t *Client) Register(appId string, port int) *Client {
     vo.App = appId
     vo.Status = STATUS_STARTING
     vo.Port = positiveInt{Value: port, Enabled: "true"}
+    vo.VipAddress = appId
+    vo.SecureVipAddress = appId
     t.instance = vo
     return t
 }
