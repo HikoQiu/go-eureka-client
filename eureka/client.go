@@ -51,7 +51,7 @@ func (t *Client) Register(appId string, port int) *Client {
     vo.Status = STATUS_STARTING
     vo.Port = positiveInt{Value: port, Enabled: "true"}
     vo.VipAddress = strings.ToLower(appId)
-    vo.SecureVipAddress = appId
+    vo.SecureVipAddress = strings.ToLower(appId)
     t.instance = vo
     return t
 }
