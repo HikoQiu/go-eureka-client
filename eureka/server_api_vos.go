@@ -16,7 +16,7 @@ type (
         // Register application instance needed -- BEGIN
         Hostname         string         `json:"hostName"`
         App              string         `json:"app"`
-        IppAddr          string         `json:"ippAddr"`
+        IppAddr          string         `json:"ipAddr"`
         VipAddress       string         `json:"vipAddress"`
         SecureVipAddress string         `json:"secureVipAddress"`
         Status           string         `json:"status"`
