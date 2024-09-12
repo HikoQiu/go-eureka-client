@@ -3,6 +3,7 @@ package eureka
 import (
     "errors"
     "math/rand"
+    "net/http"
     "os"
     "os/signal"
     "strings"
@@ -48,7 +49,7 @@ func (t *Client) Config(config *EurekaClientConfig) *Client {
 func (t *Client) Register(appId string, port int) *Client {
     vo := DefaultInstanceVo()
     vo.App = appId
-    vo.Status = STATUS_STARTING
+    vo.Status = STATUS_UP
     vo.Port = positiveInt{Value: port, Enabled: "true"}
     vo.VipAddress = strings.ToLower(appId)
     vo.SecureVipAddress = strings.ToLower(appId)
@@ -202,24 +203,16 @@ func (t *Client) registerWithEureka() {
             continue
         }
 
-        instanceId, err := api.RegisterInstanceWithVo(t.instance)
+        _, err = api.RegisterInstanceWithVo(t.instance)
         if err != nil {
             log.Errorf("Client register failed, err=%s", err.Error())
-            time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
-            continue
-        }
-        t.instance.InstanceId = instanceId
-
-        err = api.UpdateInstanceStatus(t.instance.App, t.instance.InstanceId, STATUS_UP)
-        if err != nil {
-            log.Errorf("Client UP failed, err=%s", err.Error())
             time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
             continue
         }
 
         // if success to register to eureka and update status tu UP
         // then break loop
-        break;
+        break
     }
 
     // send heartbeat
@@ -235,8 +228,18 @@ func (t *Client) heartbeat() {
                 time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
                 continue
             }
+            time.Sleep(time.Duration(t.config.HeartbeatIntervals) * time.Second)
 
-            err = api.SendHeartbeat(t.instance.App, t.instance.InstanceId)
+            resp, err := api.SendHeartbeat(t.instance.App, t.instance.InstanceId)
+            if resp != nil && resp.StatusCode() == http.StatusNotFound {
+                log.Errorf("Failed to send heartbeat, server response 404. Re-registering instance: %s", t.instance.InstanceId)
+                _, err := api.RegisterInstanceWithVo(t.instance)
+                if err != nil {
+                    log.Errorf("Register instance failed,, err=%s", err.Error())
+                }
+                //try in next loop
+                continue
+            }
             if err != nil {
                 log.Errorf("Failed to send heartbeat, err=%s", err.Error())
                 time.Sleep(time.Second * DEFAULT_SLEEP_INTERVALS)
@@ -288,7 +291,8 @@ func (t *Client) fetchRegistry() (map[string]ApplicationVo, error) {
 
 // for graceful kill. Here handle SIGTERM signal to do sth
 // e.g: kill -TERM $pid
-//      or "ctrl + c" to exit
+//
+//    or "ctrl + c" to exit
 func (t *Client) handleSignal() {
     if t.signalChan == nil {
         t.signalChan = make(chan os.Signal)

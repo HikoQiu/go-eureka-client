@@ -1,13 +1,13 @@
 package eureka
 
 import (
-    "net/http"
-    "gopkg.in/resty.v1"
-    "time"
-    "fmt"
-    "strings"
     "encoding/json"
     "errors"
+    "fmt"
+    "gopkg.in/resty.v1"
+    "net/http"
+    "strings"
+    "time"
 )
 
 // Refer to: https://github.com/Netflix/eureka/wiki/Eureka-REST-operations
@@ -40,7 +40,7 @@ func (t *EurekaServerApi) request(method, url string, args ...interface{}) (*res
 
     var res *resty.Response
     var err error
-    req := resty.New().SetTimeout(time.Second * 10).R().SetHeaders(header);
+    req := resty.New().SetTimeout(time.Second * 10).R().SetHeaders(header)
     switch method {
     case http.MethodGet:
         res, err = req.Get(url)
@@ -58,7 +58,7 @@ func (t *EurekaServerApi) request(method, url string, args ...interface{}) (*res
         return nil, err
     }
     if res.StatusCode() >= 300 {
-        return nil, errors.New(fmt.Sprintf("Request failed, Http status code: %d, body: %s", res.StatusCode(), string(res.Body())))
+        return res, errors.New(fmt.Sprintf("Request failed, Http status code: %d, body: %s", res.StatusCode(), string(res.Body())))
     }
 
     return res, err
@@ -97,6 +97,7 @@ func (t *EurekaServerApi) RegisterInstanceWithVo(vo *InstanceVo) (string, error)
         log.Errorf("Failed to register app=%s, err=%s", vo.App, err.Error())
         return "", err
     }
+    log.Infof("register success! app=%s, instanceId=%s", vo.App, vo.InstanceId)
 
     return vo.InstanceId, nil
 }
@@ -113,14 +114,13 @@ func (t *EurekaServerApi) DeRegisterInstance(appId, instanceId string) error {
 }
 
 // Send application instance heartbeat
-func (t *EurekaServerApi) SendHeartbeat(appId, instanceId string) error {
-    _, err := t.request(http.MethodPut, t.url(fmt.Sprintf("/apps/%s/%s", appId, instanceId)))
+func (t *EurekaServerApi) SendHeartbeat(appId, instanceId string) (*resty.Response, error) {
+    resp, err := t.request(http.MethodPut, t.url(fmt.Sprintf("/apps/%s/%s", appId, instanceId)))
     if err != nil {
         log.Errorf("Failed to send instance heartbeat, app-id=%s, instance-id=%s, err=%s", appId, instanceId, err.Error())
-        return err
     }
 
-    return nil
+    return resp, err
 }
 
 // Query for all instances

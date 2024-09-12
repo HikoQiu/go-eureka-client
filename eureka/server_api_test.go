@@ -55,13 +55,13 @@ func Test_SendHeartbeat(t *testing.T) {
     t.Log("Eureka server url: ", urls[0])
 
     // TEST NOT-FOUND
-    err = NewEurekaServerApi(urls[0]).SendHeartbeat("NOT-FOUND", "NOT-FOUND")
+    _, err = NewEurekaServerApi(urls[0]).SendHeartbeat("NOT-FOUND", "NOT-FOUND")
     if err != nil {
         t.Log("NOT-FOUND-TEST: ", err.Error())
     }
 
     // TEST APP
-    err = NewEurekaServerApi(urls[0]).SendHeartbeat(test_app_name, genDefaultInstanceId(test_app_name, test_instance_port))
+    _, err = NewEurekaServerApi(urls[0]).SendHeartbeat(test_app_name, genDefaultInstanceId(test_app_name, test_instance_port))
     if err != nil {
         t.Log("TEST heartbeat, app=", test_app_name, ", err=", err.Error())
     }
